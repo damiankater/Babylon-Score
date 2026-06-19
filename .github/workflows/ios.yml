@@ -11,24 +11,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: List available Xcode versions
-        run: ls /Applications | grep Xcode
-
-      - name: Setup .NET 8 (LTS, Xcode 16 compatible)
+      - name: Setup .NET 8 (LTS)
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
-      - name: Install MAUI workload
-        run: dotnet workload install maui
+      - name: Pin SDK via global.json and install MAUI
+        run: |
+          echo '{"sdk":{"version":"8.0.100","rollForward":"latestFeature"}}' > global.json
+          dotnet workload install maui
 
-      - name: Patch csproj for .NET 8 iOS build
+      - name: Patch project for .NET 8
         run: |
           sed -i '' 's/net10.0-ios/net8.0-ios/g' MauiApp1.csproj
           sed -i '' 's/net10.0-android/net8.0-android/g' MauiApp1.csproj
           sed -i '' 's/net10.0-maccatalyst/net8.0-maccatalyst/g' MauiApp1.csproj
+          sed -i '' 's/net10.0-windows10.0.19041.0/net8.0-windows10.0.19041.0/g' MauiApp1.csproj
+          sed -i '' 's/Version="10.0.0"/Version="8.0.0"/g' MauiApp1.csproj
 
-      - name: Restore dependencies
+      - name: Restore
         run: dotnet restore
 
       - name: Build iOS Release
@@ -38,7 +39,7 @@ jobs:
             /p:CodesignKey='' \
             /p:CodesignProvision=''
 
-      - name: Create IPA from .app bundle
+      - name: Create IPA
         run: |
           APP_PATH=$(find . -name "*.app" -type d | head -1)
           echo "Found app: $APP_PATH"
