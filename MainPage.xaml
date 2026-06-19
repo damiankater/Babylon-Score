@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.MainPage">
+
+    <VerticalStackLayout 
+        Padding="0"
+        Spacing="0"
+        BackgroundColor="{AppThemeBinding Light={StaticResource Surface}, Dark={StaticResource SurfaceDark}}">
+
+        <!-- Header with World Cup 2026 branding -->
+        <Frame 
+            BackgroundColor="{StaticResource Primary}"
+            HeightRequest="120"
+            Padding="20"
+            HasShadow="false"
+            CornerRadius="0">
+            <VerticalStackLayout>
+                <Label 
+                    Text="🏆 WORLD CUP 2026" 
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    TextColor="{StaticResource OnPrimary}"
+                    HorizontalOptions="Center" />
+                <Label 
+                    Text="Live Sports Tracker" 
+                    FontSize="16"
+                    TextColor="{StaticResource Gold}"
+                    HorizontalOptions="Center" />
+                <Label 
+                    Text="USA • Canada • Mexico" 
+                    FontSize="12"
+                    TextColor="{StaticResource WCWhite}"
+                    HorizontalOptions="Center"
+                    Opacity="0.8" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Live Games List -->
+        <CollectionView 
+            x:Name="LiveGamesList"
+            Margin="15,10"
+            BackgroundColor="Transparent">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame 
+                        BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceCard}, Dark={StaticResource SurfaceCardDark}}"
+                        CornerRadius="12"
+                        Padding="15"
+                        Margin="0,0,0,10"
+                        HasShadow="false">
+                        <Border Stroke="{StaticResource Outline}" StrokeThickness="1" CornerRadius="8">
+                            <Grid ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                
+                                <Image 
+                                    Grid.Column="0"
+                                    Source="{Binding Team1Flag}"
+                                    HeightRequest="40"
+                                    WidthRequest="40"
+                                    Aspect="AspectFit" />
+                                
+                                <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="{Binding Team1}" FontSize="14" FontAttributes="SemiBold" />
+                                    <Label Text="{Binding Team2}" FontSize="14" TextColor="{StaticResource OnSurfaceVariant}" />
+                                </StackLayout>
+                                
+                                <Label 
+                                    Grid.Column="2"
+                                    Text="{Binding Score}"
+                                    FontSize="18"
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource Accent}"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Match Schedule Section -->
+        <Label 
+            Text="📅 Upcoming Matches" 
+            FontSize="18"
+            FontAttributes="Bold"
+            Margin="20,15,20,5"
+            TextColor="{StaticResource WCDark}" />
+
+        <CollectionView 
+            x:Name="ScheduleList"
+            Margin="15,0"
+            HeightRequest="200">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame 
+                        BackgroundColor="{AppThemeBinding Light={StaticResource WCWhite}, Dark={StaticResource SurfaceCardDark}}"
+                        CornerRadius="8"
+                        Padding="12"
+                        Margin="0,0,0,8"
+                        HasShadow="false">
+                        <Grid ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackLayout Grid.Column="0">
+                                <Label Text="{Binding Match}" FontSize="14" FontAttributes="Medium" />
+                                <Label Text="{Binding Venue}" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                            </StackLayout>
+                            
+                            <Label 
+                                Grid.Column="1"
+                                Text="{Binding Time}"
+                                FontSize="13"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource Gold}" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Refresh Button -->
+        <Button 
+            Text="🔄 Refresh Live Scores"
+            FontSize="16"
+            BackgroundColor="{StaticResource Accent}"
+            TextColor="{StaticResource WCWhite}"
+            Margin="15,10,15,15"
+            CornerRadius="10"
+            HeightRequest="50"
+            Clicked="OnRefreshClicked" />
+    </VerticalStackLayout>
+</ContentPage>

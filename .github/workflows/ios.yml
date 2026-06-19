@@ -1,0 +1,42 @@
+name: Build iOS IPA
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Install MAUI workload
+        run: dotnet workload install maui
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build Release IPA
+        run: |
+          dotnet publish -f:net9.0-ios -c:Release /p:RuntimeIdentifier=ios-arm64 /p:CodesignKey="iPhone Developer" /p:CodesignProvision=""
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WorldCup2026-iOS
+          path: MauiApp1/bin/Release/net9.0-ios/ios-arm64/publish/*.ipa
+          retention-days: 30
+
+      - name: Download IPA
+        uses: actions/download-artifact@v4
+        with:
+          name: WorldCup2026-iOS

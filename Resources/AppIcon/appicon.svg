@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- World Cup 2026 Trophy Icon -->
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD100;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E6B800;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0033A0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#002266;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Trophy base -->
+  <path fill="url(#goldGradient)" d="M512 100 L300 200 L300 300 L200 800 L250 800 L250 900 L374 900 L374 800 L644 800 L644 900 L768 900 L768 800 L824 800 L724 300 L724 200 Z"/>
+  
+  <!-- Trophy handles -->
+  <path fill="url(#goldGradient)" d="M180 400 Q150 500 300 550 L300 300 L200 300 Z"/>
+  <path fill="url(#goldGradient)" d="M844 400 Q874 500 724 550 L724 300 L824 300 Z"/>
+  
+  <!-- Soccer ball pattern -->
+  <circle cx="512" cy="380" r="80" fill="url(#blueGradient)"/>
+  <path fill="#FFFFFF" d="M460 380 C460 350 512 330 512 330 C512 330 564 350 564 380 C564 410 512 430 512 430 C512 430 460 410 460 380 Z" opacity="0.3"/>
+  
+  <!-- Text 2026 -->
+  <text x="512" y="650" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#0033A0" text-anchor="middle">2026</text>
+</svg>

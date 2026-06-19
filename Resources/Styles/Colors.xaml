@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- FIFA World Cup 2026 Official Colors -->
+    <!-- Primary: FIFA Blue #0033A0 -->
+    <!-- Accent: Host Nations Red #E31837 -->
+    <!-- Gold: Trophy Gold #FFD100 -->
+    <!-- Dark: #1A1A2E -->
+
+    <Color x:Key="WCPrimary">#0033A0</Color>
+    <Color x:Key="WCPrimaryLight">#0044CC</Color>
+    <Color x:Key="WCPrimaryDark">#002266</Color>
+    <Color x:Key="WCAccent">#E31837</Color>
+    <Color x:Key="WCAccentLight">#FF3333</Color>
+    <Color x:Key="WCGold">#FFD100</Color>
+    <Color x:Key="WCGoldLight">#FFE066</Color>
+    <Color x:Key="WCDark">#1A1A2E</Color>
+    <Color x:Key="WCDarkLight">#24243E</Color>
+    <Color x:Key="WCWhite">#FFFFFF</Color>
+    <Color x:Key="WCLightGray">#F0F2F5</Color>
+    <Color x:Key="WCMidGray">#B0B4BB</Color>
+    <Color x:Key="WCDarkGray">#6B6E73</Color>
+
+    <!-- Semantic aliases for easy theming -->
+    <Color x:Key="Primary">{StaticResource WCPrimary}</Color>
+    <Color x:Key="PrimaryLight">{StaticResource WCPrimaryLight}</Color>
+    <Color x:Key="PrimaryDark">{StaticResource WCPrimaryDark}</Color>
+    <Color x:Key="Accent">{StaticResource WCAccent}</Color>
+    <Color x:Key="Gold">{StaticResource WCGold}</Color>
+    <Color x:Key="Surface">{StaticResource WCWhite}</Color>
+    <Color x:Key="SurfaceDark">{StaticResource WCDark}</Color>
+    <Color x:Key="SurfaceCard">{StaticResource WCLightGray}</Color>
+    <Color x:Key="SurfaceCardDark">{StaticResource WCDarkLight}</Color>
+    <Color x:Key="OnPrimary">{StaticResource WCWhite}</Color>
+    <Color x:Key="OnSurface">{StaticResource WCDark}</Color>
+    <Color x:Key="OnSurfaceVariant">{StaticResource WCMidGray}</Color>
+    <Color x:Key="Outline">{StaticResource WCMidGray}</Color>
+    <Color x:Key="Error">{StaticResource WCAccent}</Color>
+    <Color x:Key="Success">#1B8728</Color>
+
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
+    <SolidColorBrush x:Key="PrimaryLightBrush" Color="{StaticResource PrimaryLight}"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource Accent}"/>
+    <SolidColorBrush x:Key="GoldBrush" Color="{StaticResource Gold}"/>
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource Surface}"/>
+    <SolidColorBrush x:Key="SurfaceDarkBrush" Color="{StaticResource SurfaceDark}"/>
+    <SolidColorBrush x:Key="SurfaceCardBrush" Color="{StaticResource SurfaceCard}"/>
+    <SolidColorBrush x:Key="SurfaceCardDarkBrush" Color="{StaticResource SurfaceCardDark}"/>
+    <SolidColorBrush x:Key="OnPrimaryBrush" Color="{StaticResource OnPrimary}"/>
+    <SolidColorBrush x:Key="OnSurfaceBrush" Color="{StaticResource OnSurface}"/>
+    <SolidColorBrush x:Key="OnSurfaceVariantBrush" Color="{StaticResource OnSurfaceVariant}"/>
+    <SolidColorBrush x:Key="OutlineBrush" Color="{StaticResource Outline}"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource Error}"/>
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource Success}"/>
+</ResourceDictionary>

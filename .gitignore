@@ -1,0 +1,27 @@
+# MAUI
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.docstates
+
+# Build artifacts
+*.ipa
+*.apk
+*.app
+*.msix
+
+# IDE
+.vs/
+.idea/
+*.swp
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local secrets
+local.settings.json
