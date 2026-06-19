@@ -11,20 +11,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup .NET
+      - name: Setup .NET 9
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '9.0.x'
 
       - name: Install MAUI workload
         run: dotnet workload install maui
 
+      - name: Patch csproj for .NET 9 iOS build
+        run: |
+          sed -i '' 's/net10.0-ios/net9.0-ios/g' MauiApp1.csproj
+          sed -i '' 's/net10.0-android/net9.0-android/g' MauiApp1.csproj
+
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build iOS Release (unsigned bundle)
+      - name: Build iOS Release
         run: |
-          dotnet publish -f net10.0-ios -c Release \
+          dotnet publish -f net9.0-ios -c Release \
             /p:RuntimeIdentifier=ios-arm64 \
             /p:CodesignKey='' \
             /p:CodesignProvision=''
