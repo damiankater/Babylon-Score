@@ -1,52 +1,82 @@
 using BabylonScore.Models;
+using BabylonScore.Services;
 
 namespace BabylonScore.Pages;
 
 public partial class MatchesPage : ContentPage
 {
+    private bool _filterLiveOnly = false;
+
     public MatchesPage()
     {
         InitializeComponent();
+        BindingContext = LocalizationManager.Instance;
+        LocalizationManager.Instance.LanguageChanged += (s, e) => LoadMatches();
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
         LoadMatches();
     }
 
     private void LoadMatches()
     {
-        var grouped = new List<Grouping>();
-        grouped.Add(new Grouping("LIVE", MockDataStore.GetLiveMatches().ToList()));
-        grouped.Add(new Grouping("UPCOMING", MockDataStore.GetUpcomingMatches().ToList()));
-        grouped.Add(new Grouping("RESULTS", MockDataStore.GetRecentResults().ToList()));
-        AllMatchesList.ItemsSource = grouped;
-    }
+        var isAr = LocalizationManager.Instance.IsArabic;
+        var rawMatches = DatabaseService.Instance.Matches;
 
-    private void OnFilterClicked(object? sender, EventArgs e)
-    {
-        if (sender is not Button btn) return;
-        if (btn.Parent is not HorizontalStackLayout parent) return;
-        foreach (var child in parent.Children)
+        var mapped = rawMatches.Select(m => new Match
         {
-            if (child is Button b)
-            {
-                b.BackgroundColor = (Color)Application.Current!.Resources["SurfaceVariant"];
-                b.TextColor = (Color)Application.Current!.Resources["OnSurface"];
-            }
+            Id = m.Id,
+            HomeTeam = isAr ? m.HomeTeamAr : m.HomeTeam,
+            AwayTeam = isAr ? m.AwayTeamAr : m.AwayTeam,
+            HomeFlag = m.HomeFlag,
+            AwayFlag = m.AwayFlag,
+            HomeScore = m.HomeScore,
+            AwayScore = m.AwayScore,
+            Minute = isAr ? m.MinuteAr : m.Minute,
+            Status = isAr ? m.StatusAr : m.Status,
+            Venue = isAr ? m.VenueAr : m.Venue,
+            Round = isAr ? m.RoundAr : m.Round,
+            LeagueName = isAr ? m.LeagueNameAr : m.LeagueName
+        }).ToList();
+
+        if (_filterLiveOnly)
+        {
+            AllMatchesList.ItemsSource = mapped.Where(m => m.Status == "Live" || m.Status == "مباشر").ToList();
         }
-        btn.BackgroundColor = (Color)Application.Current!.Resources["Gold"];
-        btn.TextColor = (Color)Application.Current!.Resources["OnPrimary"];
-    }
-
-    private async void OnMatchSelected(object? sender, SelectionChangedEventArgs e)
-    {
-        if (e.CurrentSelection.FirstOrDefault() is Match match)
+        else
         {
-            await Shell.Current.GoToAsync($"{nameof(MatchDetailPage)}?matchId={match.Id}");
-            if (sender is CollectionView cv) cv.SelectedItem = null;
+            AllMatchesList.ItemsSource = mapped;
         }
     }
-}
 
-public class Grouping : List<Match>
-{
-    public string Key { get; }
-    public Grouping(string key, List<Match> items) : base(items) => Key = key;
+    private void OnAllFilterClicked(object sender, EventArgs e)
+    {
+        _filterLiveOnly = false;
+        AllFilterBtn.BackgroundColor = (Color)Application.Current!.Resources["Gold"];
+        AllFilterBtn.TextColor = Colors.Black;
+        LiveFilterBtn.BackgroundColor = (Color)Application.Current!.Resources["SurfaceVariant"];
+        LiveFilterBtn.TextColor = (Color)Application.Current!.Resources["OnSurface"];
+        LoadMatches();
+    }
+
+    private void OnLiveFilterClicked(object sender, EventArgs e)
+    {
+        _filterLiveOnly = true;
+        LiveFilterBtn.BackgroundColor = (Color)Application.Current!.Resources["Gold"];
+        LiveFilterBtn.TextColor = Colors.Black;
+        AllFilterBtn.BackgroundColor = (Color)Application.Current!.Resources["SurfaceVariant"];
+        AllFilterBtn.TextColor = (Color)Application.Current!.Resources["OnSurface"];
+        LoadMatches();
+    }
+
+    private async void OnMatchSelected(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.FirstOrDefault() is Match selectedMatch)
+        {
+            AllMatchesList.SelectedItem = null;
+            await Navigation.PushAsync(new MatchDetailPage(selectedMatch.Id));
+        }
+    }
 }

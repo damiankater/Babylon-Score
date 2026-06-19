@@ -1,4 +1,4 @@
-﻿using BabylonScore.Pages;
+using BabylonScore.Pages;
 using Microsoft.Extensions.Logging;
 
 namespace BabylonScore;
@@ -21,6 +21,9 @@ public static class MauiProgram
         builder.Services.AddTransient<TablePage>();
         builder.Services.AddTransient<HistoryPage>();
         builder.Services.AddTransient<MatchDetailPage>();
+        builder.Services.AddTransient<WorldCupHubPage>();
+        builder.Services.AddTransient<AdminLoginPage>();
+        builder.Services.AddTransient<AdminDashboardPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

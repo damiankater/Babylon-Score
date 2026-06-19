@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:services="clr-namespace:BabylonScore.Services"
+             xmlns:models="clr-namespace:BabylonScore.Models"
+             x:Class="BabylonScore.Pages.WorldCupHubPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#003E21"> <!-- Dynamic tournament stadium green -->
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20">
+            
+            <!-- WC Hero Header -->
+            <Grid HeightRequest="200">
+                <BoxView Color="#006C35" />
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="6" Padding="20">
+                    <Label Text="🏆" FontSize="44" HorizontalTextAlignment="Center" />
+                    <Label Text="WORLD CUP 2026" FontSize="30" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center" FontFamily="Impact" CharacterSpacing="2" />
+                    <Label Text="USA • CANADA • MEXICO" FontSize="12" TextColor="#E0C878" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Language & Back Panel -->
+            <Grid ColumnDefinitions="*,Auto" Padding="20,0" VerticalOptions="Center">
+                <Button Grid.Column="0" Text="{Binding [Back], Source={x:Static services:LocalizationManager.Instance}}" 
+                        Clicked="OnBackClicked" BackgroundColor="#006C35" TextColor="White" CornerRadius="6" HorizontalOptions="Start" HeightRequest="38" />
+                <Label Grid.Column="1" Text="🏆 FIFA WC26 HUB" FontAttributes="Bold" TextColor="White" VerticalTextAlignment="Center" />
+            </Grid>
+
+            <!-- Group Standings Header -->
+            <Label Text="{Binding [WorldCupGroups], Source={x:Static services:LocalizationManager.Instance}}" 
+                   FontSize="18" FontAttributes="Bold" TextColor="White" Margin="20,10,20,0" />
+
+            <!-- Group A Standings List -->
+            <Border Stroke="#008040" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="#004D28" Margin="20,0" Padding="12">
+                <VerticalStackLayout Spacing="10">
+                    <Grid ColumnDefinitions="30,*,40,30,30,30,40" Padding="0,0,0,6">
+                        <Label Grid.Column="0" Text="#" TextColor="#B0F0C0" FontAttributes="Bold" FontSize="11" />
+                        <Label Grid.Column="1" Text="Team" TextColor="#B0F0C0" FontAttributes="Bold" FontSize="11" />
+                        <Label Grid.Column="2" Text="Pl" TextColor="#B0F0C0" FontAttributes="Bold" FontSize="11" HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="3" Text="W" TextColor="#B0F0C0" FontAttributes="Bold" FontSize="11" HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="4" Text="D" TextColor="#B0F0C0" FontAttributes="Bold" FontSize="11" HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="5" Text="L" TextColor="#B0F0C0" FontAttributes="Bold" FontSize="11" HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="6" Text="Pts" TextColor="#E0C878" FontAttributes="Bold" FontSize="11" HorizontalTextAlignment="Center" />
+                    </Grid>
+                    <BoxView HeightRequest="1" Color="#006C35" />
+                    
+                    <CollectionView x:Name="StandingsCollection">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Standing">
+                                <Grid ColumnDefinitions="30,*,40,30,30,30,40" Padding="0,6">
+                                    <Label Grid.Column="0" Text="{Binding Rank}" TextColor="White" FontAttributes="Bold" />
+                                    <HorizontalStackLayout Grid.Column="1" Spacing="8">
+                                        <Image Source="{Binding TeamFlag}" WidthRequest="20" HeightRequest="14" Aspect="AspectFit" />
+                                        <Label Text="{Binding TeamName}" TextColor="White" FontAttributes="Bold" />
+                                    </HorizontalStackLayout>
+                                    <Label Grid.Column="2" Text="{Binding Played}" TextColor="White" HorizontalTextAlignment="Center" />
+                                    <Label Grid.Column="3" Text="{Binding Won}" TextColor="White" HorizontalTextAlignment="Center" />
+                                    <Label Grid.Column="4" Text="{Binding Drawn}" TextColor="White" HorizontalTextAlignment="Center" />
+                                    <Label Grid.Column="5" Text="{Binding Lost}" TextColor="White" HorizontalTextAlignment="Center" />
+                                    <Label Grid.Column="6" Text="{Binding Points}" TextColor="#E0C878" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Top Scorers section -->
+            <Label Text="{Binding [WorldCupTopScorers], Source={x:Static services:LocalizationManager.Instance}}" 
+                   FontSize="18" FontAttributes="Bold" TextColor="White" Margin="20,10,20,0" />
+
+            <Border Stroke="#008040" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="#004D28" Margin="20,0,20,20" Padding="12">
+                <VerticalStackLayout Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto" Padding="0,4">
+                        <Label Text="1. Aymen Hussein (Iraq)" TextColor="White" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Text="4 Goals" TextColor="#E0C878" FontAttributes="Bold" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,Auto" Padding="0,4">
+                        <Label Text="2. Kylian Mbappé (France)" TextColor="White" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Text="3 Goals" TextColor="#E0C878" FontAttributes="Bold" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,Auto" Padding="0,4">
+                        <Label Text="3. Lionel Messi (Argentina)" TextColor="White" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Text="2 Goals" TextColor="#E0C878" FontAttributes="Bold" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Copyright Notice footer -->
+            <VerticalStackLayout Padding="24" HorizontalOptions="Center" Spacing="4">
+                <Label Text="{Binding [CopyrightText], Source={x:Static services:LocalizationManager.Instance}}" 
+                       FontSize="11" FontAttributes="Bold" TextColor="#A0F0B0" HorizontalTextAlignment="Center" />
+                <Label Text="WORLD CUP 2026 EDITION" FontSize="9" TextColor="#A0F0B0" Opacity="0.6" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

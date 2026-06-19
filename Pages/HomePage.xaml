@@ -1,88 +1,133 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:BabylonScore.Controls"
+             xmlns:services="clr-namespace:BabylonScore.Services"
              xmlns:models="clr-namespace:BabylonScore.Models"
              x:Class="BabylonScore.Pages.HomePage"
              Shell.NavBarIsVisible="False"
              BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
 
     <ScrollView>
-        <VerticalStackLayout Spacing="0">
+        <VerticalStackLayout Spacing="0" FlowDirection="{Binding FlowDirection, Source={x:Static services:LocalizationManager.Instance}}">
 
-            <!-- Hero Section -->
-            <Grid HeightRequest="280" Padding="24">
-                <BoxView CornerRadius="0" Color="{StaticResource BabylonBlue}" />
+            <!-- Luxury Top Bar -->
+            <Grid Padding="20,16" ColumnDefinitions="*,Auto,Auto" BackgroundColor="{StaticResource BabylonBlueDark}">
+                <!-- Brand Title with Sumerian icon -->
+                <HorizontalStackLayout Grid.Column="0" Spacing="8" VerticalOptions="Center">
+                    <Label Text="🦁" FontSize="18" TextColor="{StaticResource Gold}" />
+                    <Label Text="{Binding [AppName], Source={x:Static services:LocalizationManager.Instance}}" 
+                           FontSize="18" FontAttributes="Bold" TextColor="White" FontFamily="Georgia" CharacterSpacing="1" />
+                </HorizontalStackLayout>
+                
+                <!-- Admin Lock button -->
+                <Button Grid.Column="1" Text="🔒 Admin" Clicked="OnAdminClicked"
+                        BackgroundColor="Transparent" TextColor="{StaticResource Gold}" 
+                        FontAttributes="Bold" Margin="0,0,10,0" HeightRequest="32" Padding="6,0" />
+
+                <!-- Language Switcher -->
+                <Button Grid.Column="2" Text="{Binding [LanguageName], Source={x:Static services:LocalizationManager.Instance}}" 
+                        Clicked="OnLanguageToggleClicked"
+                        BackgroundColor="{StaticResource Gold}" TextColor="Black" 
+                        CornerRadius="4" HeightRequest="30" FontSize="10" FontAttributes="Bold" Padding="10,0" />
+            </Grid>
+
+            <!-- Mesopotamian Banner / Cuneiform Title -->
+            <Grid BackgroundColor="{StaticResource BabylonBlue}" Padding="20,24" HeightRequest="220">
                 <VerticalStackLayout VerticalOptions="Center" Spacing="8">
-                    <Label Text="BABYLON SCORE" FontSize="34" FontAttributes="Bold"
-                           TextColor="{StaticResource OnPrimary}" FontFamily="Georgia"
-                           HorizontalTextAlignment="Center" />
-                    <Label Text="Where History Meets the Beautiful Game"
-                           FontSize="14" TextColor="{StaticResource Gold}"
-                           HorizontalTextAlignment="Center"
-                           Opacity="0.9" />
-                    <BoxView HeightRequest="2" WidthRequest="60" Color="{StaticResource Gold}"
-                             HorizontalOptions="Center" Margin="0,8,0,0" />
-                    <Label Text="WORLD CUP 2026 • USA • CANADA • MEXICO"
-                           FontSize="10" TextColor="{StaticResource OnPrimary}"
-                           HorizontalTextAlignment="Center" Opacity="0.7" Margin="0,4,0,0" />
+                    <Label Text="{Binding [CuneiformTitle], Source={x:Static services:LocalizationManager.Instance}}" 
+                           FontSize="9" TextColor="{StaticResource GoldLight}" HorizontalTextAlignment="Center" CharacterSpacing="1" />
+                    <Label Text="{Binding [AppName], Source={x:Static services:LocalizationManager.Instance}}" 
+                           FontSize="38" FontAttributes="Bold" TextColor="White" FontFamily="Georgia" HorizontalTextAlignment="Center" />
+                    <Label Text="{Binding [Slogan], Source={x:Static services:LocalizationManager.Instance}}" 
+                           FontSize="13" TextColor="{StaticResource Gold}" HorizontalTextAlignment="Center" Opacity="0.9" />
+                    <BoxView HeightRequest="1.5" WidthRequest="80" Color="{StaticResource Gold}" HorizontalOptions="Center" Margin="0,10,0,0" />
                 </VerticalStackLayout>
             </Grid>
 
-            <!-- Section: Live Now -->
-            <Label Text="LIVE NOW" FontSize="16" FontAttributes="Bold"
-                   TextColor="{StaticResource TerraCotta}" FontFamily="Georgia"
-                   Margin="24,20,24,8" />
+            <!-- Hermès Agent Category Grid (Horizontal categories) -->
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Margin="0,16">
+                <HorizontalStackLayout Spacing="12" Padding="20,0">
+                    <Button Text="🏆 WORLD CUP 2026 HUB" Clicked="OnWorldCupHubClicked" 
+                            BackgroundColor="#004D28" TextColor="White" FontAttributes="Bold" CornerRadius="20" HeightRequest="40" Padding="15,0" />
+                    <Button Text="⚽ IRAQ STARS LEAGUE" Clicked="OnIraqStarsClicked"
+                            BackgroundColor="{StaticResource BabylonBlue}" TextColor="White" FontAttributes="Bold" CornerRadius="20" HeightRequest="40" Padding="15,0" />
+                    <Button Text="🌟 UEFA CHAMPIONS" Clicked="OnUefaClicked"
+                            BackgroundColor="{StaticResource BabylonBlue}" TextColor="White" FontAttributes="Bold" CornerRadius="20" HeightRequest="40" Padding="15,0" />
+                </HorizontalStackLayout>
+            </ScrollView>
 
-            <CollectionView x:Name="LiveGamesList" Margin="16,0" HeightRequest="200"
-                            SelectionMode="Single" SelectionChanged="OnMatchSelected">
+            <!-- LIVE MATCHES SECTION -->
+            <Grid Padding="20,10,20,4" ColumnDefinitions="*,Auto" VerticalOptions="Center">
+                <Label Grid.Column="0" Text="{Binding [LiveNow], Source={x:Static services:LocalizationManager.Instance}}" 
+                       FontSize="16" FontAttributes="Bold" TextColor="{StaticResource TerraCotta}" FontFamily="Georgia" />
+                <Label Grid.Column="1" Text="● LIVE" TextColor="{StaticResource TerraCotta}" FontSize="12" FontAttributes="Bold" VerticalTextAlignment="Center" />
+            </Grid>
+
+            <!-- Live List -->
+            <CollectionView x:Name="LiveMatchesCollection" Margin="20,8" SelectionMode="Single" SelectionChanged="OnMatchSelected">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Match">
-                        <controls:LuxuryMatchCard />
+                        <Border Stroke="{StaticResource Gold}" StrokeThickness="1" StrokeShape="RoundRectangle 12" Margin="0,0,0,12" Padding="14"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource CardLight}, Dark={StaticResource CardDark}}">
+                            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,80,*">
+                                <!-- Home Team -->
+                                <VerticalStackLayout Grid.Column="0" Spacing="6" HorizontalOptions="Center">
+                                    <Image Source="{Binding HomeFlag}" WidthRequest="32" HeightRequest="32" Aspect="AspectFit" />
+                                    <Label Text="{Binding HomeTeam}" TextColor="{StaticResource OnSurface}" FontAttributes="Bold" FontSize="12" HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+                                
+                                <!-- Score & Time -->
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="4">
+                                    <Label Text="{Binding ScoreDisplay}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Gold}" HorizontalTextAlignment="Center" />
+                                    <Label Text="{Binding Minute}" FontSize="10" TextColor="{StaticResource TerraCotta}" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+
+                                <!-- Away Team -->
+                                <VerticalStackLayout Grid.Column="2" Spacing="6" HorizontalOptions="Center">
+                                    <Image Source="{Binding AwayFlag}" WidthRequest="32" HeightRequest="32" Aspect="AspectFit" />
+                                    <Label Text="{Binding AwayTeam}" TextColor="{StaticResource OnSurface}" FontAttributes="Bold" FontSize="12" HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+
+                                <!-- League Detail footer -->
+                                <Label Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding LeagueName}" FontSize="10" TextColor="{StaticResource WarmGray}" HorizontalTextAlignment="Center" Margin="0,10,0,0" />
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <!-- Section: Upcoming -->
-            <Label Text="UPCOMING" FontSize="16" FontAttributes="Bold"
-                   TextColor="{StaticResource OnSurface}" FontFamily="Georgia"
-                   Margin="24,12,24,8" />
+            <!-- NEWS / TRANSFERS SECTION -->
+            <Label Text="{Binding [TransfersNews], Source={x:Static services:LocalizationManager.Instance}}" 
+                   FontSize="16" FontAttributes="Bold" TextColor="{StaticResource BabylonBlue}" FontFamily="Georgia" Margin="20,16,20,4" />
 
-            <CollectionView x:Name="UpcomingList" Margin="16,0" HeightRequest="280"
-                            SelectionChanged="OnMatchSelected">
+            <!-- News List -->
+            <CollectionView x:Name="ArticlesCollection" Margin="20,8">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Match">
-                        <controls:LuxuryMatchCard />
+                    <DataTemplate x:DataType="models:NewsArticle">
+                        <Border Stroke="{StaticResource OutlineLight}" StrokeThickness="1" StrokeShape="RoundRectangle 12" Margin="0,0,0,12" Padding="14"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource CardLight}, Dark={StaticResource CardDark}}">
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="{Binding Category}" TextColor="{StaticResource TerraCotta}" FontSize="10" FontAttributes="Bold" CharacterSpacing="1" />
+                                <Label Text="{Binding Title}" TextColor="{StaticResource OnSurface}" FontAttributes="Bold" FontSize="14" />
+                                <Label Text="{Binding Summary}" TextColor="{StaticResource OnSurfaceVariant}" FontSize="12" MaxLines="2" LineBreakMode="TailTruncation" />
+                                <Grid ColumnDefinitions="*,Auto" Padding="0,4,0,0">
+                                    <Label Grid.Column="0" Text="{Binding Timestamp}" TextColor="{StaticResource WarmGray}" FontSize="10" />
+                                    <Label Grid.Column="1" Text="✦" TextColor="{StaticResource Gold}" />
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <!-- Section: Recent Results -->
-            <Label Text="RECENT RESULTS" FontSize="16" FontAttributes="Bold"
-                   TextColor="{StaticResource OnSurface}" FontFamily="Georgia"
-                   Margin="24,12,24,8" />
-
-            <CollectionView x:Name="ResultsList" Margin="16,0" HeightRequest="200"
-                            SelectionChanged="OnMatchSelected">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Match">
-                        <controls:LuxuryMatchCard />
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-            <!-- Footer -->
-            <VerticalStackLayout Padding="24,30" HorizontalOptions="Center" Spacing="4">
-                <BoxView HeightRequest="1" WidthRequest="40" Color="{StaticResource Gold}" HorizontalOptions="Center" />
-                <Label Text="BABYLON SCORE" FontSize="14" FontAttributes="Bold"
-                       TextColor="{StaticResource OnSurfaceVariant}" HorizontalTextAlignment="Center"
-                       FontFamily="Georgia" Margin="0,8,0,0" />
-                <Label Text="Celebrating Iraq's heritage through football"
-                       FontSize="10" TextColor="{StaticResource OnSurfaceVariant}"
-                       HorizontalTextAlignment="Center" Opacity="0.6" />
-                <Label Text="v1.0" FontSize="9" TextColor="{StaticResource OnSurfaceVariant}"
-                       HorizontalTextAlignment="Center" Opacity="0.4" Margin="0,4,0,20" />
+            <!-- Luxury Copyright / Signature Section -->
+            <VerticalStackLayout Padding="20,30,20,40" BackgroundColor="{StaticResource Mist}" Spacing="6" HorizontalOptions="FillAndExpand">
+                <Label Text="𒀭 𒈗 𒀀 🦁" HorizontalTextAlignment="Center" TextColor="{StaticResource GoldDark}" FontSize="14" />
+                <Label Text="{Binding [CopyrightText], Source={x:Static services:LocalizationManager.Instance}}" 
+                       FontSize="13" FontAttributes="Bold" CharacterSpacing="2" TextColor="{StaticResource Charcoal}" HorizontalTextAlignment="Center" />
+                <Label Text="ALL RIGHTS RESERVED • CRAFTED WITH MESOPOTAMIAN PRIDE" FontSize="9" TextColor="{StaticResource WarmGray}" HorizontalTextAlignment="Center" />
             </VerticalStackLayout>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:services="clr-namespace:BabylonScore.Services"
              xmlns:models="clr-namespace:BabylonScore.Models"
              x:Class="BabylonScore.Pages.MatchDetailPage"
              Title="Match Details"
              BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
 
     <ScrollView>
-        <VerticalStackLayout Spacing="0">
+        <VerticalStackLayout Spacing="0" FlowDirection="{Binding FlowDirection, Source={x:Static services:LocalizationManager.Instance}}">
 
             <!-- Match Hero Scoreboard -->
-            <Grid HeightRequest="200" Padding="20" BackgroundColor="{StaticResource BabylonBlue}">
+            <Grid HeightRequest="220" Padding="20" BackgroundColor="{StaticResource BabylonBlue}">
                 <Grid ColumnDefinitions="*,Auto,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="16" RowSpacing="4" VerticalOptions="Center">
 
+                    <!-- Home Team -->
                     <VerticalStackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" Spacing="8">
                         <Border Stroke="{StaticResource Gold}" StrokeThickness="0.5" StrokeShape="RoundRectangle 28"
                                 WidthRequest="56" HeightRequest="56" Padding="0"
@@ -24,6 +26,7 @@
                                TextColor="{StaticResource OnPrimary}" HorizontalTextAlignment="Center" />
                     </VerticalStackLayout>
 
+                    <!-- Score and Minute -->
                     <VerticalStackLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" Spacing="4">
                         <Label x:Name="ScoreLabel" FontSize="42" FontAttributes="Bold"
                                TextColor="{StaticResource Gold}" FontFamily="Georgia"
@@ -36,6 +39,7 @@
                                HorizontalTextAlignment="Center" />
                     </VerticalStackLayout>
 
+                    <!-- Away Team -->
                     <VerticalStackLayout Grid.Row="0" Grid.Column="2" HorizontalOptions="Center" Spacing="8">
                         <Border Stroke="{StaticResource Gold}" StrokeThickness="0.5" StrokeShape="RoundRectangle 28"
                                 WidthRequest="56" HeightRequest="56" Padding="0"
@@ -54,35 +58,41 @@
             </Grid>
 
             <!-- Match Stats -->
-            <Label Text="MATCH STATS" FontSize="14" FontAttributes="Bold"
+            <Label Text="{Binding [Stats], Source={x:Static services:LocalizationManager.Instance}}" 
+                   FontSize="14" FontAttributes="Bold"
                    TextColor="{StaticResource Gold}" FontFamily="Georgia"
                    Margin="20,16,20,8" />
 
             <VerticalStackLayout x:Name="StatsContainer" Margin="20,0" Spacing="12" />
 
             <!-- Live Events -->
-            <Label Text="LIVE EVENTS" FontSize="14" FontAttributes="Bold"
+            <Label Text="{Binding [Timeline], Source={x:Static services:LocalizationManager.Instance}}" 
+                   FontSize="14" FontAttributes="Bold"
                    TextColor="{StaticResource Gold}" FontFamily="Georgia"
                    Margin="20,16,20,8" />
-            <Label Text="No events yet" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}"
-                   Margin="20,0,20,20" HorizontalTextAlignment="Center" />
+            
+            <CollectionView x:Name="EventsCollection" Margin="20,0,20,20">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:MatchEvent">
+                        <Grid ColumnDefinitions="40,Auto,*" Margin="0,4" Padding="0,4">
+                            <Label Grid.Column="0" Text="{Binding Minute, StringFormat='{0}\''}" FontAttributes="Bold" TextColor="{StaticResource GoldDark}" VerticalTextAlignment="Center" />
+                            <Label Grid.Column="1" Text="⚽" FontSize="14" Margin="0,0,8,0" VerticalTextAlignment="Center" />
+                            <VerticalStackLayout Grid.Column="2" Spacing="2" VerticalOptions="Center">
+                                <Label Text="{Binding PlayerName}" FontAttributes="Bold" FontSize="12" TextColor="{StaticResource OnSurface}" />
+                                <Label Text="{Binding Detail}" FontSize="10" TextColor="{StaticResource OnSurfaceVariant}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-            <!-- Head to Head -->
-            <Label Text="HEAD TO HEAD" FontSize="14" FontAttributes="Bold"
-                   TextColor="{StaticResource Gold}" FontFamily="Georgia"
-                   Margin="20,8,20,8" />
-            <Border Stroke="{StaticResource OutlineLight}" StrokeThickness="0.5" StrokeShape="RoundRectangle 8"
-                    Margin="20,0,20,20" Padding="12"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource CardLight}, Dark={StaticResource CardDark}}">
-                <Grid ColumnDefinitions="*,Auto,*">
-                <Label x:Name="H2HHomeLabel" Grid.Column="0" FontSize="24" FontAttributes="Bold"
-                       TextColor="{StaticResource OnSurface}" HorizontalTextAlignment="Center" />
-                <Label Grid.Column="1" Text="-" FontSize="20" TextColor="{StaticResource OnSurfaceVariant}"
-                       HorizontalTextAlignment="Center" Margin="12,0" VerticalTextAlignment="Center" />
-                <Label x:Name="H2HAwayLabel" Grid.Column="2" FontSize="24" FontAttributes="Bold"
-                       TextColor="{StaticResource OnSurface}" HorizontalTextAlignment="Center" />
-                </Grid>
-            </Border>
+            <!-- Copyright footer -->
+            <VerticalStackLayout Padding="24" BackgroundColor="{StaticResource Mist}" Spacing="4">
+                <Label Text="{Binding [CopyrightText], Source={x:Static services:LocalizationManager.Instance}}" 
+                       FontSize="13" FontAttributes="Bold" TextColor="{StaticResource Charcoal}" HorizontalTextAlignment="Center" />
+                <Label Text="Babylon Score Match Event Stream" FontSize="9" TextColor="{StaticResource WarmGray}" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

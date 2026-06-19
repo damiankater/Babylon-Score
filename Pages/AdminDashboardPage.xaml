@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:services="clr-namespace:BabylonScore.Services"
+             xmlns:models="clr-namespace:BabylonScore.Models"
+             x:Class="BabylonScore.Pages.AdminDashboardPage"
+             Title="{Binding [AdminDashboard], Source={x:Static services:LocalizationManager.Instance}}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <!-- Title & Log out -->
+            <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="ADMIN CORE" FontSize="24" FontAttributes="Bold" TextColor="{StaticResource Gold}" FontFamily="Georgia" />
+                    <Label Text="Modify score and live parameters in real-time" FontSize="11" TextColor="{StaticResource WarmGray}" />
+                </VerticalStackLayout>
+                <Button Grid.Column="1" Text="{Binding [Logout], Source={x:Static services:LocalizationManager.Instance}}" 
+                        Clicked="OnLogoutClicked" BackgroundColor="{StaticResource TerraCotta}" TextColor="White" HeightRequest="36" Padding="10,0" CornerRadius="6" />
+            </Grid>
+
+            <!-- Match Selector -->
+            <Label Text="{Binding [SelectMatch], Source={x:Static services:LocalizationManager.Instance}}" FontAttributes="Bold" TextColor="{StaticResource GoldDark}" />
+            <Border Stroke="{StaticResource OutlineLight}" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="4">
+                <Picker x:Name="MatchPicker" Title="Choose Match" 
+                        TextColor="{StaticResource OnSurface}"
+                        SelectedIndexChanged="OnMatchSelected" />
+            </Border>
+
+            <!-- Match Editor Card -->
+            <Border x:Name="EditorCard" IsVisible="False" Stroke="{StaticResource Gold}" StrokeThickness="1" StrokeShape="RoundRectangle 12"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardLight}, Dark={StaticResource CardDark}}" Padding="16">
+                <VerticalStackLayout Spacing="14">
+                    
+                    <!-- Team vs Team info header -->
+                    <Label x:Name="TeamsHeaderLabel" FontSize="16" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="{StaticResource BabylonBlue}" />
+
+                    <!-- Live Status / Minute -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="4">
+                            <Label Text="Status" FontSize="12" FontAttributes="Bold" />
+                            <Picker x:Name="StatusPicker" TextColor="{StaticResource OnSurface}">
+                                <Picker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>Scheduled</x:String>
+                                        <x:String>Live</x:String>
+                                        <x:String>FT</x:String>
+                                    </x:Array>
+                                </Picker.ItemsSource>
+                            </Picker>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="{Binding [LiveMinute], Source={x:Static services:LocalizationManager.Instance}}" FontSize="12" FontAttributes="Bold" />
+                            <Entry x:Name="MinuteEntry" TextColor="{StaticResource OnSurface}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Score Input -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="4">
+                            <Label Text="Home Score" FontSize="12" FontAttributes="Bold" />
+                            <Entry x:Name="HomeScoreEntry" Keyboard="Numeric" TextColor="{StaticResource OnSurface}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="Away Score" FontSize="12" FontAttributes="Bold" />
+                            <Entry x:Name="AwayScoreEntry" Keyboard="Numeric" TextColor="{StaticResource OnSurface}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Core Stats Inputs -->
+                    <Label Text="Core Stats" FontAttributes="Bold" TextColor="{StaticResource Gold}" Margin="0,6,0,0" />
+                    
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="4">
+                            <Label Text="{Binding [HomePossession], Source={x:Static services:LocalizationManager.Instance}}" FontSize="11" />
+                            <Entry x:Name="HomePossEntry" Keyboard="Numeric" TextColor="{StaticResource OnSurface}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="{Binding [AwayPossession], Source={x:Static services:LocalizationManager.Instance}}" FontSize="11" />
+                            <Entry x:Name="AwayPossEntry" Keyboard="Numeric" TextColor="{StaticResource OnSurface}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="4">
+                            <Label Text="Home Shots" FontSize="11" />
+                            <Entry x:Name="HomeShotsEntry" Keyboard="Numeric" TextColor="{StaticResource OnSurface}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="Away Shots" FontSize="11" />
+                            <Entry x:Name="AwayShotsEntry" Keyboard="Numeric" TextColor="{StaticResource OnSurface}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="4">
+                            <Label Text="Home Corners" FontSize="11" />
+                            <Entry x:Name="HomeCornersEntry" Keyboard="Numeric" TextColor="{StaticResource OnSurface}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="Away Corners" FontSize="11" />
+                            <Entry x:Name="AwayCornersEntry" Keyboard="Numeric" TextColor="{StaticResource OnSurface}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Save Match Button -->
+                    <Button Text="{Binding [SaveScore], Source={x:Static services:LocalizationManager.Instance}}" 
+                            Clicked="OnSaveMatchClicked"
+                            BackgroundColor="{StaticResource BabylonBlue}" TextColor="White" 
+                            CornerRadius="8" HeightRequest="46" FontAttributes="Bold" Margin="0,10,0,0" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- News Publisher Card -->
+            <Label Text="{Binding [AddNews], Source={x:Static services:LocalizationManager.Instance}}" FontAttributes="Bold" TextColor="{StaticResource GoldDark}" Margin="0,10,0,0" />
+            <Border Stroke="{StaticResource OutlineLight}" StrokeThickness="1" StrokeShape="RoundRectangle 12"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardLight}, Dark={StaticResource CardDark}}" Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    
+                    <Entry x:Name="NewsTitleEntry" Placeholder="{Binding [NewsTitle], Source={x:Static services:LocalizationManager.Instance}}" TextColor="{StaticResource OnSurface}" />
+                    <Entry x:Name="NewsTitleArEntry" Placeholder="{Binding [NewsTitleAr], Source={x:Static services:LocalizationManager.Instance}}" TextColor="{StaticResource OnSurface}" />
+                    
+                    <Editor x:Name="NewsContentEntry" Placeholder="{Binding [NewsContent], Source={x:Static services:LocalizationManager.Instance}}" HeightRequest="100" TextColor="{StaticResource OnSurface}" />
+                    <Editor x:Name="NewsContentArEntry" Placeholder="{Binding [NewsContentAr], Source={x:Static services:LocalizationManager.Instance}}" HeightRequest="100" TextColor="{StaticResource OnSurface}" />
+                    
+                    <Button Text="{Binding [Publish], Source={x:Static services:LocalizationManager.Instance}}" 
+                            Clicked="OnPublishNewsClicked"
+                            BackgroundColor="{StaticResource Gold}" TextColor="White" 
+                            CornerRadius="8" HeightRequest="46" FontAttributes="Bold" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Copyright Label -->
+            <Label Text="{Binding [CopyrightText], Source={x:Static services:LocalizationManager.Instance}}"
+                   FontSize="11" FontAttributes="Bold" Opacity="0.5"
+                   TextColor="{StaticResource WarmGray}" HorizontalTextAlignment="Center" Margin="0,20,0,10" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

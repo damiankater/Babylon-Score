@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:services="clr-namespace:BabylonScore.Services"
+             x:Class="BabylonScore.Pages.AdminLoginPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="24" Padding="30,60,30,30" VerticalOptions="Center">
+            
+            <!-- Logo & Title -->
+            <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                <Label Text="𒀭 𒈗 𒀀" FontSize="36" TextColor="{StaticResource Gold}" HorizontalTextAlignment="Center" />
+                <Label Text="{Binding [AdminPanel], Source={x:Static services:LocalizationManager.Instance}}" 
+                       FontSize="26" FontAttributes="Bold" FontFamily="Georgia"
+                       TextColor="{StaticResource BabylonBlue}" HorizontalTextAlignment="Center" />
+                <Label Text="Secure Mesopotamian Administrative Console" FontSize="11"
+                       TextColor="{StaticResource WarmGray}" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
+            <!-- Login Form Card -->
+            <Border Stroke="{StaticResource Gold}" StrokeThickness="1" StrokeShape="RoundRectangle 16"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource CardLight}, Dark={StaticResource CardDark}}"
+                    Padding="24" Margin="0,10">
+                <VerticalStackLayout Spacing="16">
+                    
+                    <!-- Username Entry -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="{Binding [Username], Source={x:Static services:LocalizationManager.Instance}}" 
+                               FontSize="12" FontAttributes="Bold" TextColor="{StaticResource GoldDark}" />
+                        <Entry x:Name="UsernameEntry" Placeholder="adminmurtada2007" 
+                               TextColor="{StaticResource OnSurface}"
+                               BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                               HeightRequest="48" Margin="0" Keyboard="Email" />
+                    </VerticalStackLayout>
+
+                    <!-- Password Entry -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="{Binding [Password], Source={x:Static services:LocalizationManager.Instance}}" 
+                               FontSize="12" FontAttributes="Bold" TextColor="{StaticResource GoldDark}" />
+                        <Entry x:Name="PasswordEntry" IsPassword="True" Placeholder="••••••••" 
+                               TextColor="{StaticResource OnSurface}"
+                               BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                               HeightRequest="48" Margin="0" />
+                    </VerticalStackLayout>
+
+                    <!-- Error Msg -->
+                    <Label x:Name="ErrorLabel" IsVisible="False" 
+                           TextColor="{StaticResource TerraCotta}" FontSize="12" 
+                           HorizontalTextAlignment="Center" FontAttributes="Bold" />
+
+                    <!-- Submit Button -->
+                    <Button Text="{Binding [Login], Source={x:Static services:LocalizationManager.Instance}}"
+                            Clicked="OnLoginClicked"
+                            BackgroundColor="{StaticResource BabylonBlue}"
+                            TextColor="White" CornerRadius="8" HeightRequest="50"
+                            FontAttributes="Bold" Margin="0,10,0,0" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Back / Cancel Button -->
+            <Button Text="{Binding [Back], Source={x:Static services:LocalizationManager.Instance}}" 
+                    Clicked="OnBackClicked"
+                    BackgroundColor="Transparent"
+                    TextColor="{StaticResource GoldDark}" 
+                    FontAttributes="Bold" HorizontalOptions="Center" />
+
+            <!-- Copyright footer -->
+            <Label Text="{Binding [CopyrightText], Source={x:Static services:LocalizationManager.Instance}}"
+                   FontSize="11" FontAttributes="Bold" Opacity="0.5"
+                   TextColor="{StaticResource WarmGray}" HorizontalTextAlignment="Center" Margin="0,40,0,0" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
