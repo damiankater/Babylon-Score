@@ -1,14 +1,11 @@
-name: Build iOS IPA
+name: iOS-ipa-build
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build-ios:
+    name: Build Babylon Score IPA
     runs-on: macos-latest
 
     steps:
@@ -17,7 +14,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Install MAUI workload
         run: dotnet workload install maui
@@ -25,18 +22,24 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build Release IPA
+      - name: Build iOS Release (unsigned bundle)
         run: |
-          dotnet publish -f:net9.0-ios -c:Release /p:RuntimeIdentifier=ios-arm64 /p:CodesignKey="iPhone Developer" /p:CodesignProvision=""
+          dotnet publish -f net10.0-ios -c Release \
+            /p:RuntimeIdentifier=ios-arm64 \
+            /p:CodesignKey='' \
+            /p:CodesignProvision=''
+
+      - name: Create IPA from .app bundle
+        run: |
+          APP_PATH=$(find . -name "*.app" -type d | head -1)
+          echo "Found app: $APP_PATH"
+          mkdir -p Payload
+          cp -r "$APP_PATH" Payload/
+          zip -qq -r -9 BabylonScore.ipa Payload/
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: WorldCup2026-iOS
-          path: MauiApp1/bin/Release/net9.0-ios/ios-arm64/publish/*.ipa
+          name: BabylonScore-iOS
+          path: BabylonScore.ipa
           retention-days: 30
-
-      - name: Download IPA
-        uses: actions/download-artifact@v4
-        with:
-          name: WorldCup2026-iOS

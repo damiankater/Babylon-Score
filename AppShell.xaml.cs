@@ -1,10 +1,12 @@
-﻿namespace MauiApp1
+﻿using BabylonScore.Pages;
+
+namespace BabylonScore;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        Routing.RegisterRoute(nameof(MatchDetailPage), typeof(MatchDetailPage));
     }
 }

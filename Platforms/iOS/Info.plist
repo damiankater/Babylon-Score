@@ -25,9 +25,9 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>CFBundleDisplayName</key>
-	<string>World Cup 2026</string>
+	<string>Babylon Score</string>
 	<key>CFBundleName</key>
-	<string>WorldCup2026</string>
+	<string>BabylonScore</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
 	<key>XSLaunchImageMinimumOSVersion</key>
@@ -35,6 +35,6 @@
 	<key>XSLaunchImageAsset</key>
 	<string>Assets.xcassets/launchimage.launchimage</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.worldcup2026.livetracker</string>
+	<string>com.babylonscore.app</string>
 </dict>
 </plist>

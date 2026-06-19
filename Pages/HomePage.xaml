@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:BabylonScore.Controls"
+             xmlns:models="clr-namespace:BabylonScore.Models"
+             x:Class="BabylonScore.Pages.HomePage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- Hero Section -->
+            <Grid HeightRequest="280" Padding="24">
+                <BoxView CornerRadius="0" Color="{StaticResource BabylonBlue}" />
+                <VerticalStackLayout VerticalOptions="Center" Spacing="8">
+                    <Label Text="BABYLON SCORE" FontSize="34" FontAttributes="Bold"
+                           TextColor="{StaticResource OnPrimary}" FontFamily="Georgia"
+                           HorizontalTextAlignment="Center" />
+                    <Label Text="Where History Meets the Beautiful Game"
+                           FontSize="14" TextColor="{StaticResource Gold}"
+                           HorizontalTextAlignment="Center"
+                           Opacity="0.9" />
+                    <BoxView HeightRequest="2" WidthRequest="60" Color="{StaticResource Gold}"
+                             HorizontalOptions="Center" Margin="0,8,0,0" />
+                    <Label Text="WORLD CUP 2026 • USA • CANADA • MEXICO"
+                           FontSize="10" TextColor="{StaticResource OnPrimary}"
+                           HorizontalTextAlignment="Center" Opacity="0.7" Margin="0,4,0,0" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Section: Live Now -->
+            <Label Text="LIVE NOW" FontSize="16" FontAttributes="Bold"
+                   TextColor="{StaticResource TerraCotta}" FontFamily="Georgia"
+                   Margin="24,20,24,8" />
+
+            <CollectionView x:Name="LiveGamesList" Margin="16,0" HeightRequest="200"
+                            SelectionMode="Single" SelectionChanged="OnMatchSelected">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Match">
+                        <controls:LuxuryMatchCard />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Section: Upcoming -->
+            <Label Text="UPCOMING" FontSize="16" FontAttributes="Bold"
+                   TextColor="{StaticResource OnSurface}" FontFamily="Georgia"
+                   Margin="24,12,24,8" />
+
+            <CollectionView x:Name="UpcomingList" Margin="16,0" HeightRequest="280"
+                            SelectionChanged="OnMatchSelected">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Match">
+                        <controls:LuxuryMatchCard />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Section: Recent Results -->
+            <Label Text="RECENT RESULTS" FontSize="16" FontAttributes="Bold"
+                   TextColor="{StaticResource OnSurface}" FontFamily="Georgia"
+                   Margin="24,12,24,8" />
+
+            <CollectionView x:Name="ResultsList" Margin="16,0" HeightRequest="200"
+                            SelectionChanged="OnMatchSelected">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Match">
+                        <controls:LuxuryMatchCard />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Footer -->
+            <VerticalStackLayout Padding="24,30" HorizontalOptions="Center" Spacing="4">
+                <BoxView HeightRequest="1" WidthRequest="40" Color="{StaticResource Gold}" HorizontalOptions="Center" />
+                <Label Text="BABYLON SCORE" FontSize="14" FontAttributes="Bold"
+                       TextColor="{StaticResource OnSurfaceVariant}" HorizontalTextAlignment="Center"
+                       FontFamily="Georgia" Margin="0,8,0,0" />
+                <Label Text="Celebrating Iraq's heritage through football"
+                       FontSize="10" TextColor="{StaticResource OnSurfaceVariant}"
+                       HorizontalTextAlignment="Center" Opacity="0.6" />
+                <Label Text="v1.0" FontSize="9" TextColor="{StaticResource OnSurfaceVariant}"
+                       HorizontalTextAlignment="Center" Opacity="0.4" Margin="0,4,0,20" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

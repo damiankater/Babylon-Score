@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:BabylonScore.Models"
+             x:Class="BabylonScore.Pages.HistoryPage"
+             Title="HISTORY"
+             BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- Header -->
+            <VerticalStackLayout Padding="24,32,24,20" BackgroundColor="{StaticResource BabylonBlue}" Spacing="8">
+                <Label Text="LAND BETWEEN RIVERS" FontSize="22" FontAttributes="Bold"
+                       TextColor="{StaticResource OnPrimary}" FontFamily="Georgia"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="A journey through the history of Iraq — cradle of civilization"
+                       FontSize="12" TextColor="{StaticResource Gold}"
+                       HorizontalTextAlignment="Center" Opacity="0.9" />
+                <BoxView HeightRequest="1" WidthRequest="60" Color="{StaticResource Gold}"
+                         HorizontalOptions="Center" Margin="0,4,0,0" />
+            </VerticalStackLayout>
+
+            <!-- Timeline -->
+            <CollectionView x:Name="TimelineList" Margin="20,16,20,20">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:TimelineItem">
+                        <Grid ColumnDefinitions="Auto,20,*" RowDefinitions="Auto,80,Auto" Padding="0,0,0,0">
+
+                            <!-- Left: Era badge + line -->
+                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                                <Border StrokeThickness="0" StrokeShape="RoundRectangle 16"
+                                        BackgroundColor="{Binding ColorHex}"
+                                        Padding="8,4" MinimumWidthRequest="72">
+                                    <Label Text="{Binding Era}" FontSize="9" FontAttributes="Bold"
+                                           TextColor="{StaticResource OnPrimary}"
+                                           HorizontalTextAlignment="Center" />
+                                </Border>
+                                <BoxView WidthRequest="2" HeightRequest="80" Color="{StaticResource Gold}"
+                                         HorizontalOptions="Center" Margin="0,0,0,0" />
+                            </VerticalStackLayout>
+
+                            <!-- Center: Dot -->
+                            <Ellipse Grid.Column="1" Fill="{StaticResource GoldBrush}"
+                                     WidthRequest="10" HeightRequest="10"
+                                     HorizontalOptions="Center" VerticalOptions="Start"
+                                     Margin="0,4,0,0" />
+
+                            <!-- Right: Content Card -->
+                            <Border Grid.Column="2" Stroke="{StaticResource Gold}" StrokeThickness="0.5"
+                                    StrokeShape="RoundRectangle 10" Padding="14,10" Margin="0,0,0,12"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource CardLight}, Dark={StaticResource CardDark}}">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Year}" FontSize="11" FontAttributes="Bold"
+                                           TextColor="{Binding ColorHex}" />
+                                    <Label Text="{Binding Title}" FontSize="15" FontAttributes="Bold"
+                                           TextColor="{StaticResource OnSurface}" FontFamily="Georgia" />
+                                    <Label Text="{Binding Description}" FontSize="11"
+                                           TextColor="{StaticResource OnSurfaceVariant}"
+                                           LineBreakMode="WordWrap" MaxLines="4" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Footer -->
+            <VerticalStackLayout Padding="24,10,24,30" HorizontalOptions="Center" Spacing="4">
+                <BoxView HeightRequest="1" WidthRequest="40" Color="{StaticResource Gold}" HorizontalOptions="Center" />
+                <Label Text="Mesopotamia — the land that gave the world writing, law, and the beautiful game."
+                       FontSize="11" TextColor="{StaticResource OnSurfaceVariant}"
+                       HorizontalTextAlignment="Center" Margin="0,8,0,0" Opacity="0.6" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

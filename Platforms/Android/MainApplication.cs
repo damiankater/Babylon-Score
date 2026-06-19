@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace MauiApp1
+namespace BabylonScore
 {
     [Application]
     public class MainApplication : MauiApplication

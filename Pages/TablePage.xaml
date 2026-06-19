@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:BabylonScore.Models"
+             x:Class="BabylonScore.Pages.TablePage"
+             Title="TABLE"
+             BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+
+    <CollectionView x:Name="StandingsList" Margin="16,12">
+        <CollectionView.GroupHeaderTemplate>
+            <DataTemplate>
+                <Label Text="{Binding Key}" FontSize="18" FontAttributes="Bold"
+                       TextColor="{StaticResource Gold}" FontFamily="Georgia"
+                       Margin="0,16,0,8" />
+            </DataTemplate>
+        </CollectionView.GroupHeaderTemplate>
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="models:Standing">
+                <Border Stroke="{StaticResource OutlineLight}" StrokeThickness="0.5"
+                        StrokeShape="RoundRectangle 8" Padding="12,8" Margin="0,0,0,4"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource CardLight}, Dark={StaticResource CardDark}}">
+                    <Grid ColumnDefinitions="32,Auto,*,32,32,32,32,40,36" ColumnSpacing="4" VerticalOptions="Center">
+                        <Label Grid.Column="0" Text="{Binding Rank}" FontSize="13" FontAttributes="Bold"
+                               TextColor="{StaticResource OnSurfaceVariant}" HorizontalTextAlignment="Center" />
+                        <Border Grid.Column="1" StrokeThickness="0" StrokeShape="RoundRectangle 12"
+                                WidthRequest="20" HeightRequest="20" Padding="0"
+                                BackgroundColor="{StaticResource SurfaceLight}">
+                            <Image Source="{Binding TeamFlag}" HeightRequest="14" WidthRequest="14"
+                                   Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <Label Grid.Column="2" Text="{Binding TeamName}" FontSize="12" FontAttributes="Bold"
+                               TextColor="{StaticResource OnSurface}" Margin="4,0,0,0" LineBreakMode="TailTruncation" />
+                        <Label Grid.Column="3" Text="{Binding Played}" FontSize="11"
+                               TextColor="{StaticResource OnSurfaceVariant}" HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="4" Text="{Binding Won}" FontSize="11"
+                               TextColor="{StaticResource OnSurfaceVariant}" HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="5" Text="{Binding Drawn}" FontSize="11"
+                               TextColor="{StaticResource OnSurfaceVariant}" HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="6" Text="{Binding Lost}" FontSize="11"
+                               TextColor="{StaticResource OnSurfaceVariant}" HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="7" Text="{Binding GoalDifference}" FontSize="11"
+                               TextColor="{StaticResource OnSurfaceVariant}" HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="8" Text="{Binding Points}" FontSize="14" FontAttributes="Bold"
+                               TextColor="{StaticResource Gold}" HorizontalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

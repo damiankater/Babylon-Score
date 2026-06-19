@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BabylonScore.Controls.LuxuryMatchCard">
+    <Border Stroke="{StaticResource Gold}" StrokeThickness="1" StrokeShape="RoundRectangle 12"
+            BackgroundColor="{AppThemeBinding Light={StaticResource CardLight}, Dark={StaticResource CardDark}}"
+            Padding="16" Margin="0,0,0,10">
+        <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto" RowSpacing="8" ColumnSpacing="12">
+
+            <!-- Home Team (Left) -->
+            <VerticalStackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" Spacing="6">
+                <Border Stroke="{StaticResource Gold}" StrokeThickness="0.5" StrokeShape="RoundRectangle 22"
+                        WidthRequest="44" HeightRequest="44" Padding="0"
+                        BackgroundColor="{StaticResource SurfaceLight}">
+                    <Image Source="{Binding HomeFlag}" HeightRequest="28" WidthRequest="28"
+                           Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center" />
+                </Border>
+                <Label Text="{Binding HomeTeam}" FontSize="12" FontAttributes="Bold"
+                       HorizontalTextAlignment="Center" TextColor="{StaticResource OnSurface}"
+                       LineBreakMode="TailTruncation" MaxLines="1" WidthRequest="80" />
+            </VerticalStackLayout>
+
+            <!-- Score (Center) -->
+            <VerticalStackLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" Spacing="4">
+                <Label Text="{Binding ScoreDisplay}" FontSize="28" FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       TextColor="{StaticResource Gold}"
+                       FontFamily="Georgia" />
+                <Label Text="{Binding Minute}" FontSize="11"
+                       HorizontalTextAlignment="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource TerraCotta}, Dark={StaticResource TerraCottaLight}}"
+                       FontAttributes="Bold">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding IsLive}" Value="False">
+                            <Setter Property="TextColor" Value="{StaticResource OnSurfaceVariant}" />
+                            <Setter Property="FontAttributes" Value="None" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </VerticalStackLayout>
+
+            <!-- Away Team (Right) -->
+            <VerticalStackLayout Grid.Row="0" Grid.Column="2" HorizontalOptions="Center" Spacing="6">
+                <Border Stroke="{StaticResource Gold}" StrokeThickness="0.5" StrokeShape="RoundRectangle 22"
+                        WidthRequest="44" HeightRequest="44" Padding="0"
+                        BackgroundColor="{StaticResource SurfaceLight}">
+                    <Image Source="{Binding AwayFlag}" HeightRequest="28" WidthRequest="28"
+                           Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center" />
+                </Border>
+                <Label Text="{Binding AwayTeam}" FontSize="12" FontAttributes="Bold"
+                       HorizontalTextAlignment="Center" TextColor="{StaticResource OnSurface}"
+                       LineBreakMode="TailTruncation" MaxLines="1" WidthRequest="80" />
+            </VerticalStackLayout>
+
+            <!-- Venue & Round (Bottom full width) -->
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ColumnDefinitions="*,Auto" Padding="0,4,0,0">
+                <Label Grid.Column="0" Text="{Binding Venue}" FontSize="10"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
+                <Label Grid.Column="1" Text="{Binding Round}" FontSize="10"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
+            </Grid>
+
+            <!-- Live indicator bar (bottom) -->
+            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HeightRequest="3" Margin="0,2,0,0">
+                <BoxView CornerRadius="1.5" Color="{StaticResource SurfaceVariant}" />
+                <BoxView x:Name="LiveBar" CornerRadius="1.5" Color="{StaticResource Gold}"
+                         HorizontalOptions="Start" WidthRequest="0" />
+            </Grid>
+        </Grid>
+    </Border>
+</ContentView>
